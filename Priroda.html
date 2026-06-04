@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Природа России — визуальное путешествие</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: #f0f5ef;
+            background-image: radial-gradient(circle at 10% 20%, rgba(157, 204, 153, 0.12) 0%, rgba(207, 228, 199, 0.2) 90%);
+            color: #1f3b2c;
+            line-height: 1.5;
+            min-height: 100vh;
+        }
+
+        /*Меню*/
+        .app-layout {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+            gap: 2rem;
+            align-items: flex-start;
+        }
+
+        /*Меню левая сторона*/
+        .vertical-nav {
+            flex: 0 0 260px;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(4px);
+            border-radius: 0.75rem;
+            padding: 1.5rem 0.75rem;
+            box-shadow: 0 8px 20px -8px rgba(0, 20, 0, 0.1);
+            border: 1px solid rgba(100, 140, 85, 0.25);
+            position: sticky;
+            top: 2rem;
+            align-self: start;
+        }
+
+        .logo-vertical {
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0 0.8rem 1.2rem 0.8rem;
+            border-bottom: 2px solid #cfe3d4;
+            margin-bottom: 1.2rem;
+            color: #1f543e;
+        }
+
+        .nav-links-vertical {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .nav-links-vertical a {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: #2a5e48;
+            text-decoration: none;
+            font-weight: 500;
+            border-radius: 0.5rem;
+            transition: all 0.2s;
+            font-size: 1rem;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-links-vertical a:hover {
+            background: #e2f0e6;
+            border-left-color: #6db28c;
+            color: #15422f;
+        }
+
+        .nav-links-vertical a.active {
+            background: #dcebe2;
+            border-left-color: #2f7d5c;
+            color: #1a4d3a;
+            font-weight: 600;
+        }
+
+        
+        .content-area {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .page {
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(2px);
+            border-radius: 0.75rem;
+            padding: 2rem;
+            box-shadow: 0 12px 24px -10px rgba(0, 32, 0, 0.08);
+            border: 1px solid rgba(100, 140, 85, 0.3);
+            transition: all 0.2s;
+        }
+
+        h1 {
+            color: #1b4e3a;
+            margin-bottom: 1rem;
+            font-size: 2rem;
+            border-left: 6px solid #4e9f7a;
+            padding-left: 1.2rem;
+            font-weight: 600;
+        }
+
+        h2 {
+            color: #2a6b4e;
+            margin: 1.5rem 0 1rem 0;
+            font-weight: 500;
+        }
+
+        
+        .beauty-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.8rem;
+            margin-top: 1.8rem;
+        }
+
+        .nature-card {
+            background: white;
+            border-radius: 0.6rem;
+            overflow: hidden;
+            box-shadow: 0 8px 18px -8px rgba(0, 0, 0, 0.15);
+            transition: all 0.25s ease;
+            cursor: pointer;
+            border: 1px solid #ddebe0;
+        }
+
+        .nature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 16px 26px -12px rgba(30, 70, 40, 0.25);
+            border-color: #b9d5c4;
+        }
+
+        .nature-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: 0.3s;
+        }
+
+        .nature-card:hover img {
+            transform: scale(1.01);
+        }
+
+        .card-content {
+            padding: 1.2rem 1.3rem 1.4rem;
+        }
+
+        .card-content h3 {
+            font-size: 1.4rem;
+            color: #1e5a41;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-content p {
+            color: #2f4d3c;
+            font-size: 0.95rem;
+            line-height: 1.45;
+        }
+
+        .location-tag {
+            display: inline-block;
+            background: #e2f0e6;
+            padding: 0.2rem 0.8rem;
+            border-radius: 2rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #2b6e4e;
+            margin-top: 0.7rem;
+        }
+
+        .btn {
+            background: #2f7d5c;
+            color: white;
+            border: none;
+            padding: 0.6rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: 0.2s;
+            display: inline-block;
+            margin-top: 0.5rem;
+        }
+
+        .btn:hover {
+            background: #0b4e26;
+            transform: scale(0.97);
+        }
+
+        .btn-back {
+            background: #6c8b6e;
+            margin-bottom: 1rem;
+        }
+
+        .btn-back:hover {
+            background: #4a6b4c;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.8rem;
+        }
+
+        .fact-card {
+            background: #ffffffdd;
+            backdrop-filter: blur(2px);
+            border-radius: 0.6rem;
+            padding: 1.5rem;
+            transition: all 0.2s;
+            border: 1px solid #cde3d4;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+        }
+
+        .fact-card:hover {
+            background: white;
+            transform: translateY(-3px);
+            border-color: #9fc0ad;
+        }
+
+        /* Стили для формы обратной связи */
+        .contact-form {
+            max-width: 600px;
+            margin: 1.5rem 0;
+        }
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+        label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.4rem;
+            color: #2a5e48;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 0.7rem;
+            border: 1px solid #cde3d4;
+            border-radius: 0.5rem;
+            font-family: inherit;
+            font-size: 0.95rem;
+            background: white;
+            transition: 0.2s;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #2f7d5c;
+            box-shadow: 0 0 0 2px rgba(47,125,92,0.2);
+        }
+        .form-result {
+            margin-top: 1rem;
+            font-weight: 500;
+        }
+        .footer-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            max-width: 1300px;
+            margin: 0 auto;
+            gap: 0.8rem;
+        }
+
+        iframe {
+            border-radius: 0.6rem;
+            width: 100%;
+            border: 1px solid #cfe3d6;
+        }
+
+        .hero-quote {
+            font-size: 1rem;
+            background: #eaf5ee;
+            border-radius: 0.6rem;
+            padding: 1rem 1.4rem;
+            margin: 1rem 0;
+            color: #1d4d38;
+            border-left: 5px solid #5fad86;
+        }
+    </style>
+</head>
+<body>
+<div class="app-layout">
+    <!-- ВЕРТИКАЛЬНАЯ НАВИГАЦИЯ -->
+    <aside class="vertical-nav">
+        <div class="logo-vertical">
+            Природа России
+        </div>
+        <div class="nav-links-vertical" id="verticalNavLinks">
+            <a href="#" onclick="showPage('home'); return false;" class="active" data-page="home">Главная</a>
+            <a href="#" onclick="showPage('gallery'); return false;" data-page="gallery">Красота России</a>
+            <a href="#" onclick="showPage('facts'); return false;" data-page="facts">Удивительные факты</a>
+            <a href="#" onclick="showPage('map'); return false;" data-page="map">Заповедная карта</a>
+            <a href="#" onclick="showPage('feedback'); return false;" data-page="feedback">Обратная связь</a>
+        </div>
+    </aside>
+
+    <main class="content-area">
+        <!-- ГЛАВНАЯ СТРАНИЦА - Вдохновение -->
+        <div id="home-page" class="page">
+            <h1>Россия: бескрайняя красота, рождённая веками</h1>
+            <div class="hero-quote">
+                «Природа России — это не просто пейзажи, это живая легенда, в которой тайга встречается с вулканами, а жемчужное озеро отражает небеса Сибири»
+            </div>
+            <p style="font-size: 1.05rem;">От Карельских скал до курильских бухт, от Алтайских золотых озёр до дымящих камчатских сопок — каждый уголок нашей страны хранит неповторимую магию. <strong>Приглашаем в визуальное путешествие</strong> по самым красивым местам, которые стоит увидеть своими глазами.</p>
+            
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin: 1.8rem 0 0.5rem;">
+                <button class="btn" onclick="showPage('gallery')">Смотреть галерею красоты</button>
+                <button class="btn" onclick="showPage('facts')" style="background:#477a60;">Интересные факты</button>
+            </div>
+
+            <h2>Почему Россия уникальна?</h2>
+            <ul style="margin-left: 1.8rem; display: flex; flex-direction: column; gap: 0.4rem;">
+                <li><strong>Самое глубокое озеро планеты</strong> — Байкал (1642 м)</li>
+                <li><strong>Кладезь вулканов и гейзеров</strong> — Камчатка (более 300 вулканов)</li>
+                <li><strong>Великая тайга</strong> — самый крупный лесной массив Земли</li>
+                <li><strong>Плато Путорана</strong> — «край десяти тысяч озёр и водопадов»</li>
+                <li><strong>Уникальные животные</strong> — амурский тигр, белый медведь, снежный барс</li>
+            </ul>
+            <div style="background: #e2f0e9; border-radius: 0.6rem; padding: 1.2rem; margin-top: 1.8rem;">
+                <span style="font-weight: bold;">Наследие ЮНЕСКО:</span> 11 природных объектов России внесены в список Всемирного наследия — от девственных лесов Коми до вулканов Камчатки.
+            </div>
+        </div>
+
+        <!-- ГАЛЕРЕЯ КРАСОТЫ ПРИРОДЫ -->
+        <div id="gallery-page" class="page" style="display: none;">
+            <button class="btn btn-back" onclick="showPage('home')">← Вернуться на главную</button>
+            <h1>Жемчужины природы России</h1>
+            <p>10 мест, от которых захватывает дух. Насладитесь величием и разнообразием.</p>
+            <div class="beauty-grid" id="beauty-grid-container"></div>
+        </div>
+
+        <!-- СТРАНИЦА ФАКТОВ -->
+        <div id="facts-page" class="page" style="display: none;">
+            <button class="btn btn-back" onclick="showPage('home')">← Вернуться на главную</button>
+            <h1>Удивительная природа России: 6 невероятных фактов</h1>
+            <div class="cards" id="facts-container"></div>
+        </div>
+
+        <!-- КАРТА -->
+        <div id="map-page" class="page" style="display: none;">
+            <button class="btn btn-back" onclick="showPage('home')">← Вернуться на главную</button>
+            <h1>Заповедные уголки на карте</h1>
+            <iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3Aa1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6A7B8C9D0E&amp;source=constructor" height="450" allowfullscreen></iframe>
+            <p style="margin-top: 14px;"><small>Знаковые природные территории: Байкал, Алтай, Кавказский заповедник, Кроноцкий заповедник, плато Путорана.</small></p>
+            <div class="hero-quote" style="margin-top: 1rem;">Более 11% территории России занимают особо охраняемые природные территории — это больше, чем площадь многих стран Европы.</div>
+        </div>
+
+        <!-- СТРАНИЦА: ОБРАТНАЯ СВЯЗЬ -->
+        <div id="feedback-page" class="page" style="display: none;">
+            <button class="btn btn-back" onclick="showPage('home')">← Вернуться на главную</button>
+            <h1>Обратная связь</h1>
+            <p>Задайте вопрос администрации сайта, поделитесь впечатлениями о природных местах или сообщите о неточности. Мы ответим вам в ближайшее время.</p>
+            
+            <div class="contact-form">
+                <form id="feedbackForm" onsubmit="submitFeedback(event)">
+                    <div class="form-group">
+                        <label for="fb_name">Ваше имя *</label>
+                        <input type="text" id="fb_name" name="name" required placeholder="Иван Иванов">
+                    </div>
+                    <div class="form-group">
+                        <label for="fb_email">Электронная почта *</label>
+                        <input type="email" id="fb_email" name="email" required placeholder="ivan@example.ru">
+                    </div>
+                    <div class="form-group">
+                        <label for="fb_topic">Тема сообщения</label>
+                        <select id="fb_topic" name="topic">
+                            <option value="question">Вопрос о природе России</option>
+                            <option value="suggestion">Предложение по улучшению сайта</option>
+                            <option value="correction">Сообщить об ошибке</option>
+                            <option value="other">Другое</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="fb_message">Сообщение *</label>
+                        <textarea id="fb_message" name="message" rows="5" required placeholder="Напишите ваш вопрос или комментарий..."></textarea>
+                    </div>
+                    <div>
+                        <button type="submit" class="btn" style="margin-top: 0;">Отправить сообщение</button>
+                        <button type="button" class="btn" onclick="resetFeedbackForm()" style="background:#6c8b6e; margin-left: 0.5rem;">Очистить</button>
+                    </div>
+                </form>
+                <div id="feedbackResult" class="form-result"></div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<footer>
+    <div class="footer-flex">
+    </div>
+</footer>
+
+<script>
+    // МАССИВ ДЛЯ ГАЛЕРЕИ КРАСОТЫ (10 уникальных мест)
+    const beautySpots = [
+        { name: "Озеро Байкал", desc: "Глубочайшее озеро мира, хранящее 20% всей пресной воды. Зимой — прозрачный лёд-зеркало, летом — бирюзовая гладь.", region: "Иркутская обл. / Бурятия", img: "images/Baikal.jpg" },
+        { name: "Долина гейзеров (Камчатка)", desc: "Одно из крупнейших гейзерных полей Евразии. Кипящие источники, грязевые котлы и фантастический рельеф.", region: "Камчатский край", img: "images/Geizer.jpg" },
+        { name: "Алтай — Телецкое озеро", desc: "«Маленький Байкал» Сибири, окружённый тайгой и хребтами. Вода удивительного оттенка и водопад Корбу.", region: "Республика Алтай", img: "images/Teletskoe.jpg" },
+        { name: "Эльбрус (Приэльбрусье)", desc: "Высочайшая вершина Европы (5642 м). Ледники, альпийские луга и панорама Кавказа.", region: "Кабардино-Балкария", img: "images/Elbrus.jpg" },
+        { name: "Карелия — Мраморный каньон Рускеала", desc: "Затопленный мраморный карьер с изумрудной водой, горные парки и таёжные тропы.", region: "Республика Карелия", img: "images/Karelia.jpg" },
+        { name: "Ленские столбы (Якутия)", desc: "Природный парк с каменными скалами-гигантами вдоль берега Лены. Возраст пород — более 500 млн лет.", region: "Республика Саха (Якутия)", img: "images/Stolbi.jpg" },
+        { name: "Плато Путорана", desc: "«Край не тронутых человеком водопадов» — более 25 000 озёр и самый высокий водопад России (Кандинский).", region: "Красноярский край", img: "images/Plato.jpg" },
+        { name: "Куршская коса", desc: "Песчаная коса-национальный парк с дюнами, «танцующим лесом» и видами Балтики.", region: "Калининградская обл.", img: "images/Kosa.jpg" },
+        { name: "Сихотэ-Алинь (Приморье)", desc: "Девственные уссурийские леса — дом амурского тигра и уникального реликтового биоразнообразия.", region: "Приморский край", img: "images/Sihot.jpg" },
+        { name: "Кунгурская ледяная пещера", desc: "Одна из крупнейших гипсовых пещер Европы. Ледяные кристаллы, гроты и подземные озёра.", region: "Пермский край", img: "images/Peshera.jpg" }
+    ];
+
+    const funFacts = [
+        { title: "Крупнейший лес — тайга", desc: "Российская тайга занимает 15% всей суши Земли и производит огромное количество кислорода. Она больше Амазонии по площади!" },
+        { title: "Самая длинная река Европы", desc: "Волга — 3530 км. Но в России течёт ещё и Лена (4400 км) и Енисей." },
+        { title: "Остров Врангеля — «родильный дом» белых медведей", desc: "Здесь находится самое большое количество родовых берлог белых медведей в Арктике." },
+        { title: "Лотосы в дельте Волги", desc: "В Астраханском заповеднике цветут уникальные каспийские лотосы — настоящий рай для фотографов." },
+        { title: "Баргузинский заповедник — старейший в России", desc: "Основан в 1916 году для сохранения соболя. Именно отсюда началась заповедная система страны." },
+        { title: "Ледяные купола и мёрзлые торфяники Ямала", desc: "В ЯНАО обнаружены газогидратные формации, настоящие чудеса криосферы." }
+    ];
+
+    function renderBeautyGallery() {
+        const container = document.getElementById('beauty-grid-container');
+        if (!container) return;
+        container.innerHTML = '';
+        beautySpots.forEach(spot => {
+            const card = document.createElement('div');
+            card.className = 'nature-card';
+            card.innerHTML = `
+                <img src="${spot.img}" alt="${spot.name}" loading="lazy" onerror="this.src='https://placehold.co/600x400?text=Красота+России'">
+                <div class="card-content">
+                    <h3>${spot.name}</h3>
+                    <p>${spot.desc}</p>
+                    <div class="location-tag">${spot.region}</div>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    function renderFacts() {
+        const container = document.getElementById('facts-container');
+        if (!container) return;
+        container.innerHTML = '';
+        funFacts.forEach(fact => {
+            const card = document.createElement('div');
+            card.className = 'fact-card';
+            card.innerHTML = `
+                <h3 style="color:#1e5a41; margin-bottom: 0.5rem;">${fact.title}</h3>
+                <p>${fact.desc}</p>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    // Обработка формы обратной связи
+    function submitFeedback(event) {
+        event.preventDefault();
+        const name = document.getElementById('fb_name').value.trim();
+        const email = document.getElementById('fb_email').value.trim();
+        const topic = document.getElementById('fb_topic').value;
+        const message = document.getElementById('fb_message').value.trim();
+
+        if (!name || !email || !message) {
+            document.getElementById('feedbackResult').innerHTML = '<span style="color:#b94e2e;">Пожалуйста, заполните все обязательные поля (имя, email, сообщение).</span>';
+            return;
+        }
+        if (!email.includes('@') || !email.includes('.')) {
+            document.getElementById('feedbackResult').innerHTML = '<span style="color:#b94e2e;">Введите корректный email адрес.</span>';
+            return;
+        }
+        if (message.length < 5) {
+            document.getElementById('feedbackResult').innerHTML = '<span style="color:#b94e2e;">Сообщение должно содержать не менее 5 символов.</span>';
+            return;
+        }
+
+        // Имитация отправки
+        document.getElementById('feedbackResult').innerHTML = '<span style="color:#1e6b3b;">Спасибо, ' + name + '! Ваше сообщение отправлено администрации. Мы свяжемся с вами в ближайшее время.</span>';
+        document.getElementById('feedbackForm').reset();
+        setTimeout(() => {
+            document.getElementById('feedbackResult').innerHTML = '';
+        }, 6000);
+    }
+
+    function resetFeedbackForm() {
+        document.getElementById('feedbackForm').reset();
+        document.getElementById('feedbackResult').innerHTML = '';
+    }
+
+    function showPage(pageName) {
+        const pages = ['home-page', 'gallery-page', 'facts-page', 'map-page', 'feedback-page'];
+        pages.forEach(p => {
+            const el = document.getElementById(p);
+            if (el) el.style.display = 'none';
+        });
+        let targetId = '';
+        if (pageName === 'home') targetId = 'home-page';
+        else if (pageName === 'gallery') targetId = 'gallery-page';
+        else if (pageName === 'facts') targetId = 'facts-page';
+        else if (pageName === 'map') targetId = 'map-page';
+        else if (pageName === 'feedback') targetId = 'feedback-page';
+        else targetId = 'home-page';
+        
+        const target = document.getElementById(targetId);
+        if (target) target.style.display = 'block';
+
+        // обновить активный класс
+        const navLinks = document.querySelectorAll('.nav-links-vertical a');
+        navLinks.forEach(link => {
+            const linkPage = link.getAttribute('data-page');
+            if ((linkPage === pageName) || (pageName === 'home' && linkPage === 'home') ||
+                (pageName === 'gallery' && linkPage === 'gallery') ||
+                (pageName === 'facts' && linkPage === 'facts') ||
+                (pageName === 'map' && linkPage === 'map') ||
+                (pageName === 'feedback' && linkPage === 'feedback')) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+
+        if (pageName === 'gallery') renderBeautyGallery();
+        if (pageName === 'facts') renderFacts();
+    }
+
+    // пу-пу-пу
+    renderBeautyGallery();
+    renderFacts();
+    showPage('home');
+    window.submitFeedback = submitFeedback;
+    window.resetFeedbackForm = resetFeedbackForm;
+</script>
+</body>
+</html>
